@@ -7,3 +7,7 @@ databaseChangeLog:
       file: db/changelog/03-create-roles-table.xml
   - include:
       file: db/changelog/04-create-user_role-table.xml
+  - include:
+      file: db/changelog/05-create-table-refresh_token.xml
+  - include:
+      file: db/changelog/06-insert-roles.xml
