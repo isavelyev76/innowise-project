@@ -31,7 +31,7 @@
                 baseTableName="address"
                 baseColumnNames="user_id"
                 constraintName="address_user_id_fkey"
-                referencedTableName="user"
+                referencedTableName="users"
                 referencedColumnNames="id"
                 onDelete="CASCADE"/>
     </changeSet>

@@ -21,7 +21,7 @@
                 baseTableName="user_role"
                 baseColumnNames="user_id"
                 constraintName="user_role_user_id_fkey"
-                referencedTableName="user"
+                referencedTableName="users"
                 referencedColumnNames="id"
                 onDelete="CASCADE"/>
 
@@ -29,7 +29,7 @@
                 baseTableName="user_role"
                 baseColumnNames="role_id"
                 constraintName="user_role_role_id_fkey"
-                referencedTableName="role"
+                referencedTableName="roles"
                 referencedColumnNames="id"
                 onDelete="CASCADE"/>
     </changeSet>
