@@ -59,7 +59,7 @@ public class AuthService {
 
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
 
-        Role customerRole = roleRepository.findByName(RoleName.ROLE_CUSTOMER)
+        Role customerRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new IllegalStateException("Default role CUSTOMER not found"));
         user.setRoles(Set.of(customerRole));
 

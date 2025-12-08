@@ -6,6 +6,6 @@ package ru.isavelev76.userservice.entities.enums;
  */
 
 public enum RoleName {
-    ROLE_CUSTOMER,
+    ROLE_USER,
     ROLE_ADMIN
 }
