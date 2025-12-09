@@ -1,15 +1,5 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/01-create-users-table.xml
+      file: db/changelog/01-create-restaurant-table.xml
   - include:
-      file: db/changelog/02-create-address-table.xml
-  - include:
-      file: db/changelog/03-create-roles-table.xml
-  - include:
-      file: db/changelog/04-create-user_role-table.xml
-  - include:
-      file: db/changelog/05-create-table-refresh_token.xml
-  - include:
-      file: db/changelog/06-insert-roles.xml
-  - include:
-      file: db/changelog/07-users-add-status.xml
+      file: db/changelog/02-create-dish-table.xml
