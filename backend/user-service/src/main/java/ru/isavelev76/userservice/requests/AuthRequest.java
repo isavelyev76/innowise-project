@@ -31,7 +31,7 @@ public class AuthRequest {
         @Size(min = 6, message = "Password must be at least 6 characters")
         private String password;
 
-        @NotBlank(message = "Password is required", groups = OnRegister.class)
+        @NotBlank(message = "Confirm Password is required", groups = OnRegister.class)
         @Size(min = 6, message = "Password must be at least 6 characters")
         private String confirmPassword;
 }

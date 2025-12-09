@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.isavelev76.userservice.entities.Role;
 import ru.isavelev76.userservice.entities.User;
 import ru.isavelev76.userservice.entities.enums.RoleName;
+import ru.isavelev76.userservice.entities.enums.UserStatus;
 import ru.isavelev76.userservice.exceptions.PasswordMatchException;
 import ru.isavelev76.userservice.exceptions.RefreshTokenOrCredentialsNotValidException;
 import ru.isavelev76.userservice.exceptions.UserAlreadyExistsException;
@@ -62,6 +63,7 @@ public class AuthService {
         Role customerRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new IllegalStateException("Default role CUSTOMER not found"));
         user.setRoles(Set.of(customerRole));
+        user.setStatus(UserStatus.ACTIVE);
 
         return userRepository.save(user);
     }

@@ -11,7 +11,7 @@
         </insert>
         <insert tableName="roles">
             <column name="id" value="22222222-2222-2222-2222-222222222222"/>
-            <column name="name" value="ROLE_CUSTOMER"/>
+            <column name="name" value="ROLE_USER"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

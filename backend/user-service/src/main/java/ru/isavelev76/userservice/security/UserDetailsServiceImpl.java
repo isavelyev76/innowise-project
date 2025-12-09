@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.isavelev76.userservice.repositories.UserRepository;
 
 import java.util.UUID;
@@ -26,8 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Filed to retrieve user by username: " + username));
     }
 
+    @Transactional(readOnly = true)
     public UserDetails loadUserById(UUID id) throws UsernameNotFoundException {
-        return userRepository.findById(id)
+        return userRepository.findByIdWithRoles(id)
                 .map(UserDetailsImpl::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Filed to retrieve user by username: " + id));
     }

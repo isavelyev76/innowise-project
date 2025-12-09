@@ -20,6 +20,7 @@ public interface AuthMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(target = "status", ignore = true)
     @Mapping(target = "roles", ignore = true)
     @Mapping(target = "fullName", source = "authRequest.fullName")
     @Mapping(target = "email", source = "authRequest.email")
