@@ -1,0 +1,36 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="
+                   http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="4" author="isavelev76">
+        <createTable tableName="user_role">
+            <column name="user_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="uuid">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user_role"
+                       columnNames="user_id,role_id"
+                       constraintName="user_role_pkey"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_role"
+                baseColumnNames="user_id"
+                constraintName="user_role_user_id_fkey"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+
+        <addForeignKeyConstraint
+                baseTableName="user_role"
+                baseColumnNames="role_id"
+                constraintName="user_role_role_id_fkey"
+                referencedTableName="roles"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
+    </changeSet>
+</databaseChangeLog>
