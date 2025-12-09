@@ -3,6 +3,7 @@ package ru.isavelev76.userservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.isavelev76.userservice.entities.enums.UserStatus;
 
 import java.util.*;
 
@@ -32,6 +33,10 @@ public class User extends AuditingEntity {
 
     @Column(name = "password_hash", nullable = false)
     String passwordHash;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Address> addresses = new ArrayList<>();

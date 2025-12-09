@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/05-create-table-refresh_token.xml
   - include:
       file: db/changelog/06-insert-roles.xml
+  - include:
+      file: db/changelog/07-users-add-status.xml

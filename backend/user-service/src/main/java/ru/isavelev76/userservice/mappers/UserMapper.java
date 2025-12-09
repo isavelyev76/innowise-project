@@ -11,5 +11,5 @@ public interface UserMapper {
             expression = "java(user.getRoles().stream()" +
                     ".map(r -> r.getName().name())" +
                     ".toList())")
-    UserResponse toUserResponse(User user);
+    UserResponse toResponse(User user);
 }
