@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: restaurant-service
+    version: 1.0
+  datasource:
+    url: jdbc:postgresql://localhost:5435/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        hbm2ddl:
+          validate
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
+
+app:
+  secret: ${JWT_SECRET}
+
+minio:
+  url: http://localhost:9000
+  username: ${MINIO_ROOT_USER}
+  password: ${MINIO_ROOT_PASSWORD}
+  bucket-name: dishes-images
+  base-url: /api/dishes/media
