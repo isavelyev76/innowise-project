@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/06-insert-roles.xml
   - include:
       file: db/changelog/07-users-add-status.xml
+  - include:
+      file: db/changelog/08-insert-admins.xml

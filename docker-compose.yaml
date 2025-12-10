@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  user-service-db:
+    image: postgres:17
+    container_name: user-service-db
+    env_file:
+      - ./backend/user-service/.env
+    ports:
+      - "5434:5432"
+    volumes:
+      - user_pgdata:/var/lib/postgresql/data
+
+  restaurant-service-db:
+    image: postgres:17
+    container_name: restaurant-service-db
+    env_file:
+      - ./backend/restaurant-service/.env
+    ports:
+      - "5435:5432"
+    volumes:
+      - restaurant_pgdata:/var/lib/postgresql/data
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio-images
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  user_pgdata:
+  restaurant_pgdata:
+  minio_data:

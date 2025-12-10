@@ -11,6 +11,7 @@ import ru.isavelev76.userservice.entities.User;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,7 +25,15 @@ public class JWTUtil {
     private final AppProperties appProperties;
 
     public String generateToken(User user) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(appProperties.expiresIn()).toInstant());
+        Date expirationDate = Date.from(ZonedDateTime.now()
+                .plusMinutes(appProperties.expiresIn())
+                .toInstant());
+
+        List<String> roles = user.getRoles()
+                .stream()
+                .map(r -> r.getName().name())
+                .toList();
+
 
         return JWT.create()
                 .withSubject(user.getId().toString())
@@ -32,6 +41,7 @@ public class JWTUtil {
                 .withIssuedAt(new Date())
                 .withExpiresAt(expirationDate)
                 .withIssuer("isavelev76")
+                .withClaim("roles", roles)
                 .sign(Algorithm.HMAC256(appProperties.secret()));
     }
 
