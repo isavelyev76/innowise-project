@@ -20,7 +20,15 @@ services:
       - "5435:5432"
     volumes:
       - restaurant_pgdata:/var/lib/postgresql/data
-
+  order-service-db:
+    image: postgres:17
+    container_name: order-service-db
+    env_file:
+      - ./backend/order-service/.env
+    ports:
+      - "5436:5432"
+    volumes:
+      - order_pgdata:/var/lib/postgresql/data
   minio:
     image: quay.io/minio/minio:latest
     container_name: minio-images
@@ -37,4 +45,5 @@ services:
 volumes:
   user_pgdata:
   restaurant_pgdata:
+  order_pgdata:
   minio_data:
