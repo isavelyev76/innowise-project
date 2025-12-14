@@ -28,6 +28,7 @@
                 baseColumnNames="order_id"
                 constraintName="order_payment_id_fkey"
                 referencedTableName="orders"
-                referencedColumnNames="id" onDelete="CASCADE"/>
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>
