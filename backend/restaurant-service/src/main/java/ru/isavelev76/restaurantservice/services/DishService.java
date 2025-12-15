@@ -10,7 +10,9 @@ import ru.isavelev76.restaurantservice.mappers.DishMapper;
 import ru.isavelev76.restaurantservice.repositories.DishRepository;
 import ru.isavelev76.restaurantservice.repositories.RestaurantRepository;
 import jakarta.persistence.EntityNotFoundException;
+import ru.isavelev76.restaurantservice.requests.DishPriceRequest;
 import ru.isavelev76.restaurantservice.requests.DishRequest;
+import ru.isavelev76.restaurantservice.responses.DishPriceResponse;
 import ru.isavelev76.restaurantservice.responses.DishResponse;
 
 import java.util.List;
@@ -76,4 +78,15 @@ public class DishService {
         dishMediaService.deleteDishImage(dish);
         dishRepository.deleteById(id);
     }
+
+    public List<DishPriceResponse> getPrices(List<DishPriceRequest> requests) {
+        return requests.stream()
+                .map(req -> {
+                    Dish dish = dishRepository.findById(req.dishId())
+                            .orElseThrow(() -> new EntityNotFoundException("Dish not found: " + req.dishId()));
+                    return new DishPriceResponse(dish.getId(), dish.getPrice());
+                })
+                .toList();
+    }
+
 }

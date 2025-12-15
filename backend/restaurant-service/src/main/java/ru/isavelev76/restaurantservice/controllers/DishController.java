@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.isavelev76.restaurantservice.requests.DishPriceRequest;
 import ru.isavelev76.restaurantservice.requests.DishRequest;
+import ru.isavelev76.restaurantservice.responses.DishPriceResponse;
 import ru.isavelev76.restaurantservice.responses.DishResponse;
 import ru.isavelev76.restaurantservice.services.DishMediaService;
 import ru.isavelev76.restaurantservice.services.DishService;
@@ -77,4 +79,12 @@ public class DishController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/prices")
+    public ResponseEntity<List<DishPriceResponse>> getDishPrices(
+            @RequestBody List<DishPriceRequest> requests
+    ) {
+        return ResponseEntity.ok(dishService.getPrices(requests));
+    }
+
 }
