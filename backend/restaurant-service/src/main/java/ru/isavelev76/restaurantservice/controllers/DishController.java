@@ -1,7 +1,5 @@
 package ru.isavelev76.restaurantservice.controllers;
 
-import io.minio.GetObjectArgs;
-import io.minio.GetObjectResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,12 +31,12 @@ public class DishController {
     private final DishMediaService dishMediaService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<DishResponse> getById(@PathVariable UUID id) {
+    public ResponseEntity<DishResponse> getById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(dishService.getById(id));
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<DishResponse>> getAllByRestaurant(@PathVariable UUID restaurantId) {
+    public ResponseEntity<List<DishResponse>> getAllByRestaurant(@PathVariable("restaurantId") UUID restaurantId) {
         return ResponseEntity.ok(dishService.getAllByRestaurant(restaurantId));
     }
 
@@ -52,7 +50,7 @@ public class DishController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DishResponse> updateDish(@PathVariable UUID id,
+    public ResponseEntity<DishResponse> updateDish(@PathVariable("id") UUID id,
                                                    @Valid @RequestPart("dish") DishRequest dishRequest,
                                                    @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         DishResponse response = dishService.updateDish(id, dishRequest, imageFile);
@@ -61,13 +59,13 @@ public class DishController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         dishService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/media/{fileName:.+}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String fileName) {
+    public ResponseEntity<byte[]> getImage(@PathVariable("fileName") String fileName) {
         try {
            byte[] bytes = dishMediaService.getDishImage(fileName);
 
@@ -80,6 +78,7 @@ public class DishController {
         }
     }
 
+    @PreAuthorize("hasRole('INTERNAL')")
     @PostMapping("/prices")
     public ResponseEntity<List<DishPriceResponse>> getDishPrices(
             @RequestBody List<DishPriceRequest> requests

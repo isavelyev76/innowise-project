@@ -24,6 +24,7 @@ spring:
 
 app:
   secret: ${JWT_SECRET}
+  iternal-token: ${ITERNAL_TOKEN}
 
 minio:
   url: http://localhost:9000
