@@ -6,5 +6,16 @@ package ru.isavelev76.orderservice.entities.enums;
  */
 
 public enum PaymentStatus {
-    PAID, PENDING, FAILED, REFUNDED, CANCELLED
+    PENDING,
+    PAID,
+    FAILED,
+    REFUNDED;
+
+    public boolean canTransitionTo(PaymentStatus target) {
+        return switch (this) {
+            case PENDING -> target == PAID || target == FAILED;
+            case PAID -> target == REFUNDED;
+            default -> false;
+        };
+    }
 }
