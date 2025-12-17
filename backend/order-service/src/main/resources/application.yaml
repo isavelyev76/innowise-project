@@ -1,9 +1,9 @@
 spring:
   application:
-    name: restaurant-service
+    name: order-service
     version: 1.0
   datasource:
-    url: jdbc:postgresql://localhost:5435/${POSTGRES_DB}
+    url: jdbc:postgresql://localhost:5436/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -17,4 +17,50 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+  cloud:
+    openfeign:
+      client:
+        config:
+          restaurant-api:
+            url: http://localhost:9090/api/restaurants
+            connect-timeout: 5000
+            read-timeout: 5000
+          dishes-api:
+            url: http://localhost:9090/api/dishes
+            connect-timeout: 5000
+            read-timeout: 5000
 
+resilience4j: # настройка размыкания цепи в зависимости от количества неуспешных запросов
+  retry:
+    instances:
+      external-api-retry:
+        max-attempts: 3 # количество повторных вызовов при неуспешном вызове (circuit breaker может иметь меньше запросов для разрыва и он будет приоритетным)
+        wait-duration:
+          seconds: 3 # через сколько секунд делать повторные вызовы
+        retry-exceptions:
+          - feign.FeignException.InternalServerError
+          - feign.FeignException.ServiceUnavailable
+          - feign.FeignException.BadGateway
+
+  circuitbreaker:
+    instances:
+      external-api-breaker:
+        sliding-window-type: count_based
+        sliding-window-size: 5 #
+        failure-rate-threshold: 75 # порог успешных ответов стороннего сервиса
+        minimum-number-of-calls: 5 # после 5 запросов начинает происходить расчет sliding
+        wait-duration-in-open-state:
+          seconds: 10 # время нахождения в разомкнутом состоянии (никаких запросов на внешний сервис)
+        automatic-transition-from-open-to-half-open-enabled: true # автоматический переход из состояния открыто в полуоткрыто
+        max-wait-duration-in-half-open-state:
+          seconds: 5 # время нахождения в полуоткрытом состоянии (запросы, для того чтобы понять надо ли дальше держать сервис в открытом состоянии)
+        permitted-number-of-calls-in-half-open-state: 2 # разрешенное количество вызовов на внешний сервис в состоянии полуоткрыт
+# то есть открытое на 10 секунд, затем переход в полуоткрытое, ждем 5 секунд и попытка сделать 2 запроса и если они успешны, то переводим в состояние closed иначе в open state
+
+app:
+  secret: ${JWT_SECRET}
+  internal-token: ${INTERNAL_TOKEN}
+  restaurant-api:
+    url: http://localhost:9090/api/restaurants
+  dishes-api:
+    url: http://localhost:9090/api/dishes
