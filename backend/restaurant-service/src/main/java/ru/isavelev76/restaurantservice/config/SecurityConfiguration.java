@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.isavelev76.restaurantservice.security.InternalServiceAuthFilter;
 import ru.isavelev76.restaurantservice.security.JWTAuthenticationFilter;
 
 /**
@@ -22,9 +23,11 @@ import ru.isavelev76.restaurantservice.security.JWTAuthenticationFilter;
 @EnableWebSecurity
 public class SecurityConfiguration {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final InternalServiceAuthFilter internalServiceAuthFilter;
 
-    public SecurityConfiguration(JWTAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfiguration(JWTAuthenticationFilter jwtAuthenticationFilter, InternalServiceAuthFilter internalServiceAuthFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.internalServiceAuthFilter = internalServiceAuthFilter;
     }
 
     @Bean
@@ -34,14 +37,20 @@ public class SecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(urlConfig -> urlConfig
+                        .requestMatchers(HttpMethod.GET, "/api/restaurants").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/restaurants/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/dishes/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/dishes/restaurant/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(
+                        internalServiceAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
