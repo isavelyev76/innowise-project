@@ -22,3 +22,6 @@ app:
   secret: ${JWT_SECRET}
   refresh-expires-in: 1500
   expires-in: 3600
+
+server:
+  port: 8081

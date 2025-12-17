@@ -72,7 +72,6 @@ public class DishController {
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_PNG)
                     .body(bytes);
-
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }

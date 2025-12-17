@@ -36,7 +36,7 @@ public class InternalServiceAuthFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("X-Internal-Token");
 
-        if (header != null && header.equals(appProperties.iternalToken())) {
+        if (header != null && header.equals(appProperties.internalToken())) {
             Authentication auth = new UsernamePasswordAuthenticationToken(
                     "api-service",
                     null,

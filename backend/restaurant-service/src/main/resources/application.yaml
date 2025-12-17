@@ -21,10 +21,9 @@ spring:
     multipart:
       max-file-size: 3MB
       max-request-size: 3MB
-
 app:
   secret: ${JWT_SECRET}
-  iternal-token: ${ITERNAL_TOKEN}
+  internal-token: ${INTERNAL_TOKEN}
 
 minio:
   url: http://localhost:9000
@@ -32,3 +31,6 @@ minio:
   password: ${MINIO_ROOT_PASSWORD}
   bucket-name: dishes-images
   base-url: /api/dishes/media
+
+server:
+  port: 9090
