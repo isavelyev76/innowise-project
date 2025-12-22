@@ -10,12 +10,4 @@ public enum PaymentStatus {
     PAID,
     FAILED,
     REFUNDED;
-
-    public boolean canTransitionTo(PaymentStatus target) {
-        return switch (this) {
-            case PENDING -> target == PAID || target == FAILED;
-            case PAID -> target == REFUNDED;
-            default -> false;
-        };
-    }
 }

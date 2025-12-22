@@ -38,11 +38,9 @@ public class OrderService {
 
         restaurantServiceClient.checkRestaurantExists(request.restaurantId());
 
-        // 2. Получение блюд + цен (REST)
         Map<UUID, Integer> dishPrices =
                 dishServiceClient.getPrices(request.items());
 
-        // 3. Создание Order
         Order order = new Order();
         order.setUserId(userId);
         order.setRestaurantId(request.restaurantId());
@@ -96,13 +94,7 @@ public class OrderService {
     @Transactional
     public OrderResponse updateStatus(UUID id, OrderStatus status) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Order not found"));
-
-        if (!order.getStatus().canTransitionTo(status)) {
-            throw new IllegalStateException(
-                    "Cannot change status from " + order.getStatus() + " to " + status
-            );
-        }
+                .orElseThrow(() -> new EntityNotFoundException("Order with id: " + id + " not found"));
 
         order.setStatus(status);
         return orderMapper.toResponse(order);

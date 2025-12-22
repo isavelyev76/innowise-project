@@ -2,8 +2,6 @@ package ru.isavelev76.orderservice.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
-
 /**
  * @author Ilya Savelyev
  * @since 12.12.2025
