@@ -41,6 +41,48 @@ services:
       - "9001:9001"
     volumes:
       - minio_data:/data
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: Dockerfile
+    image: user-service
+    container_name: user-service
+    env_file:
+      - ./backend/user-service/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - user-service-db
+    ports:
+      - "8081:8081"
+  restaurant-service:
+    build:
+      context: ./backend/restaurant-service
+      dockerfile: Dockerfile
+    image: restaurant-service
+    container_name: restaurant-service
+    env_file:
+      - ./backend/restaurant-service/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - restaurant-service-db
+    ports:
+      - "9090:9090"
+  order-service:
+    build:
+      context: ./backend/order-service
+      dockerfile: Dockerfile
+    image: order-service
+    container_name: order-service
+    env_file:
+      - ./backend/order-service/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - order-service-db
+    ports:
+      - "8080:8080"
 
 volumes:
   user_pgdata:
