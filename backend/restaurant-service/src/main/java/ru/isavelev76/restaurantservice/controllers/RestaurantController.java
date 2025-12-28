@@ -1,6 +1,7 @@
 package ru.isavelev76.restaurantservice.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.isavelev76.restaurantservice.requests.RestaurantRequest;
 import ru.isavelev76.restaurantservice.responses.RestaurantResponse;
 import ru.isavelev76.restaurantservice.services.RestaurantService;
+import ru.isavelev76.restaurantservice.requests.RestaurantFilterRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,9 +26,10 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
 
-    @GetMapping
-    public ResponseEntity<List<RestaurantResponse>> getAll() {
-        return ResponseEntity.ok(restaurantService.getAll());
+    @GetMapping()
+    public ResponseEntity<List<RestaurantResponse>> getAll(@ModelAttribute RestaurantFilterRequest filter,
+                                                           Pageable pageable) {
+        return ResponseEntity.ok(restaurantService.getFilteredRestaurants(filter, pageable));
     }
 
     @GetMapping("/{id}")

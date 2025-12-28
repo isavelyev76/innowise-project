@@ -1,5 +1,7 @@
 package ru.isavelev76.orderservice.requests;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.UUID;
 
 /**
@@ -8,6 +10,8 @@ import java.util.UUID;
  */
 
 public record CreateOrderItemRequest(
+        @NotNull(message = "Dish id is required")
         UUID dishId,
-        int quantity
+        @NotNull(message = "Quantity must be provided")
+        Integer quantity
 ) {}

@@ -1,5 +1,7 @@
 package ru.isavelev76.orderservice.requests;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -10,9 +12,10 @@ import java.util.UUID;
  * @since 14.12.2025
  */
 
+// TODO: надо проверить будет ли работать
 public record CreateOrderRequest(
-        @NotNull
+        @NotNull(message = "Restaurant id is required")
         UUID restaurantId,
-        String paymentMethod,
-        List<CreateOrderItemRequest> items
+        @NotEmpty(message = "List of dishes is required")
+        List<@Valid CreateOrderItemRequest> items
 ) {}

@@ -1,5 +1,6 @@
 package ru.isavelev76.orderservice.requests;
 
+import jakarta.validation.constraints.NotNull;
 import ru.isavelev76.orderservice.entities.enums.OrderStatus;
 
 /**
@@ -8,6 +9,7 @@ import ru.isavelev76.orderservice.entities.enums.OrderStatus;
  */
 
 public record UpdateOrderStatusRequest(
+        @NotNull(message = "Order status is required")
         OrderStatus status
 ) {
 }

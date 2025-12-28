@@ -1,13 +1,17 @@
 package ru.isavelev76.restaurantservice.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.isavelev76.restaurantservice.entities.Restaurant;
 import ru.isavelev76.restaurantservice.mappers.RestaurantMapper;
 import ru.isavelev76.restaurantservice.repositories.RestaurantRepository;
-
-import jakarta.persistence.EntityNotFoundException;
+import ru.isavelev76.restaurantservice.repositories.specifications.RestaurantSpecificationBuilder;
+import ru.isavelev76.restaurantservice.requests.RestaurantFilterRequest;
 import ru.isavelev76.restaurantservice.requests.RestaurantRequest;
 import ru.isavelev76.restaurantservice.responses.RestaurantResponse;
 
@@ -22,9 +26,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class RestaurantService {
-
     private final RestaurantRepository restaurantRepository;
     private final RestaurantMapper restaurantMapper;
+    private final RestaurantSpecificationBuilder specificationBuilder;
 
     @Transactional
     public RestaurantResponse create(RestaurantRequest request) {
@@ -40,14 +44,6 @@ public class RestaurantService {
         return restaurantMapper.toResponse(restaurant);
     }
 
-    @Transactional(readOnly = true)
-    public List<RestaurantResponse> getAll() {
-        return restaurantRepository.findAll().stream()
-                .map(restaurantMapper::toResponse)
-                .toList();
-    }
-
-    @Transactional
     public RestaurantResponse update(UUID id, RestaurantRequest request) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));
@@ -61,5 +57,15 @@ public class RestaurantService {
             throw new EntityNotFoundException("Restaurant not found");
         }
         restaurantRepository.deleteById(id);
+    }
+
+    public List<RestaurantResponse> getFilteredRestaurants(RestaurantFilterRequest filter, Pageable pageable) {
+        Specification<Restaurant> specification = specificationBuilder.build(filter);
+
+        Page<Restaurant> restaurants = restaurantRepository.findAll(specification, pageable);
+
+        return restaurants.stream()
+                .map(restaurantMapper::toResponse)
+                .toList();
     }
 }
