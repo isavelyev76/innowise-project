@@ -1,6 +1,7 @@
 package ru.isavelev76.orderservice.responses;
 
 import ru.isavelev76.orderservice.entities.enums.OrderStatus;
+import ru.isavelev76.orderservice.entities.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,5 +17,6 @@ public record OrderResponse(
         LocalDateTime orderDate,
         Integer totalPrice,
         UUID userId,
-        UUID restaurantId
+        UUID restaurantId,
+        PaymentStatus paymentStatus
 ) {}

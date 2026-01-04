@@ -2,8 +2,6 @@ package ru.isavelev76.userservice.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.UUID;
-
 public record AuthResponse(
         @JsonProperty("user")
         UserResponse userResponse,

@@ -15,7 +15,6 @@ import ru.isavelev76.restaurantservice.requests.RestaurantFilterRequest;
 import ru.isavelev76.restaurantservice.requests.RestaurantRequest;
 import ru.isavelev76.restaurantservice.responses.RestaurantResponse;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -59,13 +58,11 @@ public class RestaurantService {
         restaurantRepository.deleteById(id);
     }
 
-    public List<RestaurantResponse> getFilteredRestaurants(RestaurantFilterRequest filter, Pageable pageable) {
+    public Page<RestaurantResponse> getFilteredRestaurants(RestaurantFilterRequest filter, Pageable pageable) {
         Specification<Restaurant> specification = specificationBuilder.build(filter);
 
         Page<Restaurant> restaurants = restaurantRepository.findAll(specification, pageable);
 
-        return restaurants.stream()
-                .map(restaurantMapper::toResponse)
-                .toList();
+        return restaurants.map(restaurantMapper::toResponse);
     }
 }

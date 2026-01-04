@@ -48,12 +48,11 @@ public class PaymentService {
             );
         }
 
-
         Payment payment = new Payment();
         payment.setMethod(request.method());
         payment.setAmount(order.getTotalPrice());
         // TODO можно сделать PENDING и через пару секунд менять статус на PAID
-        payment.setStatus(PaymentStatus.PENDING);
+        payment.setStatus(PaymentStatus.PAID);
         payment.setOrder(order);
 
         paymentRepository.save(payment);

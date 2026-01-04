@@ -34,11 +34,10 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.placeOrder(userId, request));
     }
 
-    // TODO: дописать нужно чтобы люди могли смотреть заказ принадлежащий им
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponse> getById(@PathVariable("id") UUID id) {
-        return ResponseEntity.status(HttpStatus.OK).body(orderService.getById(id));
+    @PreAuthorize("hasRole('ADMIN') || @orderSecurityService.isOrderOwner(#orderId, authentication)")
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getById(@PathVariable("orderId") UUID orderId) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getById(orderId));
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
