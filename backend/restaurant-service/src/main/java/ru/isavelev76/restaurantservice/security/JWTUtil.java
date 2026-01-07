@@ -22,6 +22,10 @@ import java.util.UUID;
 public class JWTUtil {
     private final AppProperties appProperties;
 
+    public String getStatus(DecodedJWT jwt) {
+        return jwt.getClaim("status").asString();
+    }
+
     public List<String> getRoles(DecodedJWT jwt) {
         return jwt.getClaim("roles").asList(String.class);
     }

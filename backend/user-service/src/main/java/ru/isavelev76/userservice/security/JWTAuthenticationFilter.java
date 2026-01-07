@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.isavelev76.userservice.entities.enums.UserStatus;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -27,7 +28,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
@@ -38,6 +38,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 if (!jwtUtil.isTokenExpired(decodedJWT)) {
                     UUID userId = jwtUtil.getUserIdFromJWT(decodedJWT);
                     UserDetails userDetails = userDetailsService.loadUserById(userId);
+                    if (!userDetails.isEnabled()) {
+                        String path = request.getRequestURI();
+                        boolean isActivationRequest = path.equals("/api/users/me/activate");
+
+                        if (!isActivationRequest) {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Account is deactivated. Please activate it.");
+                            return;
+                        }
+                    }
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authToken);

@@ -1,6 +1,7 @@
 package ru.isavelev76.userservice.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ru.isavelev76.userservice.entities.enums.UserStatus;
 
 public record AuthResponse(
         @JsonProperty("user")
@@ -9,6 +10,7 @@ public record AuthResponse(
         String accessToken,
         @JsonProperty("refresh_token")
         String refreshToken,
+        UserStatus status,
         String message
 ) {
 }

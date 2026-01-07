@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.isavelev76.userservice.entities.User;
+import ru.isavelev76.userservice.entities.enums.UserStatus;
 
 import java.util.Collection;
 import java.util.List;
@@ -60,6 +61,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return user.getStatus() == UserStatus.ACTIVE;
     }
 }

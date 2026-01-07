@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,6 +38,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             try {
                 DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
                 if (!jwtUtil.isTokenExpired(decodedJWT)) {
+                    String status = jwtUtil.getStatus(decodedJWT);
+
+                    if ("DEACTIVATED".equals(status)) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Account is deactivated");
+                        return;
+                    }
+
                     UUID userId = jwtUtil.getUserIdFromJWT(decodedJWT);
 
                     List<GrantedAuthority> authorities = jwtUtil.getRoles(decodedJWT).stream()
@@ -49,7 +57,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                             authorities
                     );
 
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    context.setAuthentication(auth);
+                    SecurityContextHolder.setContext(context);
                 }
             } catch (JWTVerificationException ex) {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT token");

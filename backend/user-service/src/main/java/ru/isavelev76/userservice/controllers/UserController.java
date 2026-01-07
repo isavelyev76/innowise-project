@@ -48,7 +48,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PutMapping("/me/password")
     public ResponseEntity<Void> changePassword(
             @AuthenticationPrincipal UserDetailsImpl userDetails,

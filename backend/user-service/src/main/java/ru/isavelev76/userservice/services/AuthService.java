@@ -8,7 +8,6 @@ import ru.isavelev76.userservice.entities.Role;
 import ru.isavelev76.userservice.entities.User;
 import ru.isavelev76.userservice.entities.enums.RoleName;
 import ru.isavelev76.userservice.entities.enums.UserStatus;
-import ru.isavelev76.userservice.exceptions.PasswordMatchException;
 import ru.isavelev76.userservice.exceptions.RefreshTokenOrCredentialsNotValidException;
 import ru.isavelev76.userservice.exceptions.UserAlreadyExistsException;
 import ru.isavelev76.userservice.mappers.AuthMapper;
@@ -37,9 +36,6 @@ public class AuthService {
     private final JWTUtil jwtUtil;
 
     public AuthResponse register(AuthRequest registerRequest) {
-        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            throw new PasswordMatchException("Password do not match");
-        }
 
         User user = createUser(authMapper.toEntity(registerRequest));
         String accessToken = jwtUtil.generateToken(user);

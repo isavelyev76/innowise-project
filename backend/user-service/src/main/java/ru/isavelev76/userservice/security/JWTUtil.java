@@ -42,6 +42,7 @@ public class JWTUtil {
                 .withExpiresAt(expirationDate)
                 .withIssuer("isavelev76")
                 .withClaim("roles", roles)
+                .withClaim("status", user.getStatus().toString())
                 .sign(Algorithm.HMAC256(appProperties.secret()));
     }
 

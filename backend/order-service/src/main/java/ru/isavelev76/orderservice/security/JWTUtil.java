@@ -26,6 +26,10 @@ public class JWTUtil {
         return jwt.getClaim("roles").asList(String.class);
     }
 
+    public String getStatus(DecodedJWT jwt) {
+        return jwt.getClaim("status").asString();
+    }
+
     public UUID getUserIdFromJWT(DecodedJWT jwt) {
         return UUID.fromString(jwt.getSubject());
     }

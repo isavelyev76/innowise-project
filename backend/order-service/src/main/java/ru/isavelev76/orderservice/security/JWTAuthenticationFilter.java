@@ -38,6 +38,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             try {
                 DecodedJWT decodedJWT = jwtUtil.verifyToken(token);
                 if (!jwtUtil.isTokenExpired(decodedJWT)) {
+                    String status = jwtUtil.getStatus(decodedJWT);
+
+                    if ("DEACTIVATED".equals(status)) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Account is deactivated");
+                        return;
+                    }
+
                     UUID userId = jwtUtil.getUserIdFromJWT(decodedJWT);
 
                     List<GrantedAuthority> authorities = jwtUtil.getRoles(decodedJWT).stream()

@@ -20,7 +20,7 @@ import ru.isavelev76.userservice.requests.groups.OnRegister;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthRequest {
         @NotBlank(message = "Username is required", groups = OnRegister.class)
-        @Size(min = 3, max = 100, message = "Username must be between 3 and 30 characters", groups = OnRegister.class)
+        @Size(min = 3, max = 100, message = "Username must be between 3 and 100 characters", groups = OnRegister.class)
         private String fullName;
 
         @NotBlank(message = "Email is required", groups = {OnRegister.class, OnLoginByEmail.class})
@@ -30,8 +30,4 @@ public class AuthRequest {
         @NotBlank(message = "Password is required")
         @Size(min = 6, message = "Password must be at least 6 characters")
         private String password;
-
-        @NotBlank(message = "Confirm Password is required", groups = OnRegister.class)
-        @Size(min = 6, message = "Password must be at least 6 characters")
-        private String confirmPassword;
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.isavelev76.userservice.entities.User;
 import ru.isavelev76.userservice.entities.enums.UserStatus;
-import ru.isavelev76.userservice.exceptions.PasswordMatchException;
 import ru.isavelev76.userservice.mappers.UserMapper;
 import ru.isavelev76.userservice.repositories.UserRepository;
 import ru.isavelev76.userservice.requests.ChangePasswordRequest;
@@ -68,9 +67,6 @@ public class UserService {
 
         if (!passwordEncoder.matches(request.oldPassword(), user.getPasswordHash())) {
             throw new IllegalArgumentException("Old password is incorrect");
-        }
-        if (!request.newPassword().equals(request.confirmPassword())) {
-            throw new PasswordMatchException("Passwords do not match");
         }
 
         String newHash = passwordEncoder.encode(request.newPassword());

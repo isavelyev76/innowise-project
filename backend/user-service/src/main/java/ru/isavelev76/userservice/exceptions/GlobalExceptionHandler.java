@@ -22,11 +22,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(PasswordMatchException.class)
-    public ResponseEntity<Map<String, Object>> handlePasswordMatch(PasswordMatchException e) {
-        return buildResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-    }
-
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleUserExists(UserAlreadyExistsException e) {
         return buildResponse(HttpStatus.CONFLICT, e.getMessage());
