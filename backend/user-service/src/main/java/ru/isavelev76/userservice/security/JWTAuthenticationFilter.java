@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +23,7 @@ import java.util.UUID;
  * @since 02.12.2025
  */
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
@@ -43,7 +45,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                         boolean isActivationRequest = path.equals("/api/users/me/activate");
 
                         if (!isActivationRequest) {
-                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Account is deactivated. Please activate it.");
+                            log.info("User is DEACTIVATED. Proceeding as a guest.");
+                            filterChain.doFilter(request, response);
                             return;
                         }
                     }

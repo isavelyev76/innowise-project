@@ -1,5 +1,6 @@
 package ru.isavelev76.orderservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +23,17 @@ import java.util.UUID;
 public class PaymentController {
     private final PaymentService paymentService;
 
-    @PreAuthorize("@orderSecurityService.isOrderOwner(#id, authentication)")
     @PostMapping("/order/{id}/payment")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("@orderSecurityService.isOrderOwner(#id, authentication)")
     public ResponseEntity<PaymentResponse> create(@PathVariable("id") UUID id,
                                                   @RequestBody PaymentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.create(request, id));
     }
 
-    @PreAuthorize("@orderSecurityService.canViewPayment(#id, authentication)")
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("@orderSecurityService.canViewPayment(#id, authentication)")
     public ResponseEntity<PaymentResponse> getById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok().body(paymentService.findById(id));
     }

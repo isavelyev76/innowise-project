@@ -232,7 +232,7 @@ const AdminMenuPage = () => {
 
                   <TableCell>
                     <Typography fontWeight="bold" color="primary">
-                      {dish.price} ₽
+                      {dish.price} BYN
                     </Typography>
                   </TableCell>
 
@@ -327,7 +327,7 @@ const AdminMenuPage = () => {
               required
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">₽</InputAdornment>
+                  <InputAdornment position="start">BYN</InputAdornment>
                 ),
               }}
               value={form.price}

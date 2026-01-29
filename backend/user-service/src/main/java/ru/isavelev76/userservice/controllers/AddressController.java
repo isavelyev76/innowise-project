@@ -1,5 +1,6 @@
 package ru.isavelev76.userservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,14 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<AddressResponse> createAddress(@RequestBody AddressRequest addressRequest,
                                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.status(HttpStatus.CREATED).body(addressService.create(addressRequest, userDetails.getId()));
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<AddressResponse> getById(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -39,6 +42,7 @@ public class AddressController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<List<AddressResponse>> getAll(
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -46,6 +50,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<AddressResponse> update(
             @PathVariable UUID id,
             @RequestBody AddressRequest request,
@@ -55,6 +60,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<Void> delete(
             @PathVariable UUID id,
             @AuthenticationPrincipal UserDetailsImpl userDetails

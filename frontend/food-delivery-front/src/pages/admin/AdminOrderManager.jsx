@@ -98,11 +98,11 @@ const AdminOrderManager = () => {
 
   const getStatusChip = (status) => {
     const map = {
-      PLACED: { label: "НОВЫЙ", color: "error" },
-      COOKING: { label: "ГОТОВИТСЯ", color: "warning" },
-      READY: { label: "ЖДЕТ КУРЬЕРА", color: "success" },
-      DELIVERED: { label: "ДОСТАВЛЕН", color: "default" },
-      CANCELLED: { label: "ОТМЕНА", color: "default" },
+      PLACED: { label: "PLACED", color: "error" },
+      COOKING: { label: "COOKING", color: "warning" },
+      READY: { label: "READY", color: "success" },
+      DELIVERED: { label: "DELIVERED", color: "default" },
+      CANCELLED: { label: "CANCELLED", color: "default" },
     };
     const conf = map[status] || { label: status, color: "default" };
 
@@ -312,7 +312,7 @@ const AdminOrderManager = () => {
                         />
                       ) : (
                         <Chip
-                          label="НЕ ОПЛАТА"
+                          label="НЕ ОПЛАЧЕНО"
                           color="warning"
                           size="small"
                           variant="outlined"
@@ -327,7 +327,7 @@ const AdminOrderManager = () => {
                         fontWeight="bold"
                         color="primary"
                       >
-                        {order.totalPrice} ₽
+                        {order.totalPrice} BYN
                       </Typography>
                     </TableCell>
 

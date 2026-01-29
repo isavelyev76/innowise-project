@@ -141,7 +141,7 @@ const UserOrdersPage = () => {
                     )}
                   </TableCell>
 
-                  <TableCell>{order.totalPrice} ₽</TableCell>
+                  <TableCell>{order.totalPrice} BYN</TableCell>
 
                   <TableCell align="right">
                     <Button

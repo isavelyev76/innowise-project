@@ -1,5 +1,6 @@
 package ru.isavelev76.restaurantservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,7 @@ public class RestaurantController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RestaurantResponse> create(@RequestBody RestaurantRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -45,6 +47,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RestaurantResponse> update(@PathVariable UUID id,
                                                      @RequestBody RestaurantRequest request) {
@@ -52,6 +55,7 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         restaurantService.delete(id);

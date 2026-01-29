@@ -118,7 +118,7 @@ const OrderStatusPage = () => {
 
         <Box sx={{ textAlign: "center", my: 4 }}>
           <Typography variant="h3" color="primary" sx={{ fontWeight: "bold" }}>
-            {order.totalPrice} ₽
+            {order.totalPrice} BYN
           </Typography>
         </Box>
 

@@ -1,5 +1,6 @@
 package ru.isavelev76.orderservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,42 +27,48 @@ import java.util.UUID;
 public class OrderController {
     private final OrderService orderService;
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<OrderResponse> create(@RequestBody @Valid CreateOrderRequest request,
                                                 Authentication authentication) {
         UUID userId = UUID.fromString(authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.placeOrder(userId, request));
     }
 
-    @PreAuthorize("hasRole('ADMIN') || @orderSecurityService.isOrderOwner(#orderId, authentication)")
     @GetMapping("/{orderId}")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN') || @orderSecurityService.isOrderOwner(#orderId, authentication)")
     public ResponseEntity<OrderResponse> getById(@PathVariable("orderId") UUID orderId) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getById(orderId));
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/my")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<OrderResponse>> getMyOrders(Authentication authentication) {
         UUID userId = UUID.fromString(authentication.getName());
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getMyOrders(userId));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<OrderResponse>> getAll() {
         return ResponseEntity.ok().body(orderService.getAll());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/status")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderResponse> updateStatus(@PathVariable("id") UUID id,
                                                       @RequestBody @Valid UpdateOrderStatusRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.updateStatus(id, request.status()));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         orderService.delete(id);
         return ResponseEntity.noContent().build();

@@ -1,5 +1,6 @@
 package ru.isavelev76.userservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<UserResponse> getMe(
             @AuthenticationPrincipal UserDetailsImpl user) {
         return ResponseEntity.ok(userService.getMe(user.getId()));
     }
 
     @PutMapping("/me/fullname")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<UserResponse> updateFullName(
             @AuthenticationPrincipal UserDetailsImpl user,
             @RequestBody UserUpdateFullNameRequest request) {
@@ -36,6 +39,7 @@ public class UserController {
     }
 
     @PatchMapping("/me/deactivate")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<Void> deactivate(
             @AuthenticationPrincipal UserDetailsImpl user) {
         userService.deactivate(user.getId());
@@ -43,12 +47,14 @@ public class UserController {
     }
 
     @PatchMapping("/me/activate")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<Void> activate(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         userService.activate(userDetails.getId());
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/me/password")
+    @SecurityRequirement(name = "JWT")
     public ResponseEntity<Void> changePassword(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody @Valid ChangePasswordRequest request

@@ -78,6 +78,7 @@ const AddressesTab = ({ showMessage }) => {
             onClick={() => openDialog()}
             sx={{
               height: 180,
+              p: 3,
               borderStyle: "dashed",
               borderWidth: 2,
               borderColor: "#BE6E46",

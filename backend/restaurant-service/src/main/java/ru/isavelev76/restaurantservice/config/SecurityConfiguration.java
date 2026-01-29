@@ -42,14 +42,12 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(urlConfig -> urlConfig
                         .requestMatchers(HttpMethod.POST, "/api/dishes/prices").hasRole("INTERNAL")
-                        .requestMatchers(HttpMethod.GET, "/api/restaurants").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/restaurants/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/dishes/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/dishes/media/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/dishes/restaurant/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/restaurants/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/dishes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

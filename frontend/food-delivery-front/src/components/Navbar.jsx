@@ -23,7 +23,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import Logout from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 
 const Navbar = () => {
@@ -87,7 +87,7 @@ const Navbar = () => {
               {role === "ROLE_ADMIN" && (
                 <>
                   <Button
-                    startIcon={<AdminPanelSettingsIcon />}
+                    startIcon={<ListAltIcon />}
                     component={Link}
                     to="/admin/orders"
                     sx={{ color: "white", display: { xs: "none", sm: "flex" } }}

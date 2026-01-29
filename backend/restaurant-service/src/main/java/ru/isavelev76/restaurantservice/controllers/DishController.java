@@ -1,5 +1,6 @@
 package ru.isavelev76.restaurantservice.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,16 +41,18 @@ public class DishController {
         return ResponseEntity.ok(dishService.getAllByRestaurant(restaurantId));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DishResponse> createDish(@Valid @RequestPart("dish") DishRequest dishRequest,
                                                    @RequestPart(value = "image", required = false) MultipartFile imageFile) {
         DishResponse response = dishService.createDish(dishRequest, imageFile);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<DishResponse> updateDish(@PathVariable("id") UUID id,
                                                    @Valid @RequestPart("dish") DishRequest dishRequest,
                                                    @RequestPart(value = "image", required = false) MultipartFile imageFile) {
@@ -58,6 +61,7 @@ public class DishController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "JWT")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         dishService.delete(id);
@@ -77,12 +81,11 @@ public class DishController {
         }
     }
 
-    @PreAuthorize("hasRole('INTERNAL')")
     @PostMapping("/prices")
+    @PreAuthorize("hasRole('INTERNAL')")
     public ResponseEntity<List<DishPriceResponse>> getDishPrices(
             @RequestBody List<DishPriceRequest> requests
     ) {
         return ResponseEntity.ok(dishService.getPrices(requests));
     }
-
 }

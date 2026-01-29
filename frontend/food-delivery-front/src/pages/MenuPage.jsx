@@ -127,7 +127,7 @@ const MenuPage = () => {
                   color="primary"
                   sx={{ fontWeight: "bold", whiteSpace: "nowrap", ml: 1 }}
                 >
-                  {dish.price} ₽
+                  {dish.price} BYN
                 </Typography>
               </Box>
 

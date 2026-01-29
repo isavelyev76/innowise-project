@@ -43,6 +43,7 @@ public class RestaurantService {
         return restaurantMapper.toResponse(restaurant);
     }
 
+    @Transactional
     public RestaurantResponse update(UUID id, RestaurantRequest request) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));

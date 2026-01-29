@@ -106,7 +106,7 @@ const CartPage = () => {
                     {item.name}
                   </Typography>
                 </TableCell>
-                <TableCell align="center">{item.price} ₽</TableCell>
+                <TableCell align="center">{item.price} BYN</TableCell>
                 <TableCell align="center">
                   <Box
                     sx={{
@@ -136,7 +136,7 @@ const CartPage = () => {
                   align="center"
                   sx={{ fontWeight: "bold", color: "primary.main" }}
                 >
-                  {item.price * item.quantity} ₽
+                  {item.price * item.quantity} BYN
                 </TableCell>
                 <TableCell align="right">
                   <IconButton
@@ -163,7 +163,7 @@ const CartPage = () => {
           }}
         >
           <Typography variant="h5" fontWeight="bold">
-            Итого: <span style={{ color: "#BE6E46" }}>{totalPrice} ₽</span>
+            Итого: <span style={{ color: "#BE6E46" }}>{totalPrice} BYN</span>
           </Typography>
           <Button
             variant="contained"
